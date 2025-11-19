@@ -30,7 +30,7 @@ router = APIRouter(
 def get_repo_search_service() -> RepoSearchService:
     """
     Dependency injection function for RepoSearchService.
-    
+
     Returns:
         RepoSearchService: Service instance for repository operations.
     """
@@ -145,7 +145,8 @@ async def get_repository(
         return repo_info.model_dump(by_alias=True)
 
     except Exception as e:
-        logger.error(f"Error fetching repository {owner}/{repo}: {e}", exc_info=True)
+        logger.error(
+            f"Error fetching repository {owner}/{repo}: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch repository details. Please try again later.",
@@ -159,9 +160,10 @@ async def get_repository(
     summary="List user repositories",
     description="List all repositories for a specific GitHub user",
 )
-async def list_user_repositories(
-    username: str = Query(..., description="GitHub username"),
-    sort: str = Query("updated", description="Sort by: created, updated, pushed, name"),
+async def list_repositories(
+    username: str = Path(..., description="The GitHub username"),
+    sort: str = Query(
+        "updated", description="Sort by: created, updated, pushed, name"),
     order: str = Query("desc", description="Sort order: asc or desc"),
     page: int = Query(1, ge=1, description="Page number"),
     per_page: int = Query(20, ge=1, le=100, description="Results per page"),
@@ -200,7 +202,8 @@ async def list_user_repositories(
         return [repo.model_dump(by_alias=True) for repo in repos]
 
     except Exception as e:
-        logger.error(f"Error listing repositories for user {username}: {e}", exc_info=True)
+        logger.error(
+            f"Error listing repositories for user {username}: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to list user repositories. Please try again later.",
