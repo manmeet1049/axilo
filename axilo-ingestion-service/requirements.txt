@@ -1,0 +1,7 @@
+requests
+boto3
+pytest
+GitPython==3.1.40
+tree-sitter==0.21.3
+tree-sitter-python==0.21.0
+pydantic[dotenv]==1.10.13
